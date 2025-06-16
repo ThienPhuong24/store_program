@@ -1,0 +1,39 @@
+﻿<Properties StartupConfiguration="{CB46F2BB-9866-4315-815B-AF39A584BE9F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="shopping_tutorial/Models/CategoryModel.cs">
+    <Files>
+      <File FileName="shopping_tutorial/Views/_ViewImports.cshtml" />
+      <File FileName="shopping_tutorial/Views/Shared/_Layout.cshtml" />
+      <File FileName="shopping_tutorial/Models/ProductModel.cs" />
+      <File FileName="shopping_tutorial/Models/BrandModel.cs" />
+      <File FileName="shopping_tutorial/Models/CategoryModel.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="shopping_tutorial" expanded="True">
+            <Node name="shopping_tutorial" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True">
+                <Node name="CategoryModel.cs" selected="True" />
+              </Node>
+              <Node name="Views" expanded="True">
+                <Node name="Cart" expanded="True" />
+                <Node name="Category" expanded="True" />
+                <Node name="Checkout" expanded="True" />
+                <Node name="Product" expanded="True" />
+                <Node name="Shared" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.shopping__tutorial PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+</Properties>

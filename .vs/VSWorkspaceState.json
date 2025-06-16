@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\shopping_tutorial",
+    "\\shopping_tutorial\\Areas",
+    "\\shopping_tutorial\\Areas\\Admin",
+    "\\shopping_tutorial\\Areas\\Admin\\Controllers",
+    "\\shopping_tutorial\\Views",
+    "\\shopping_tutorial\\Views\\Cart"
+  ],
+  "SelectedNode": "\\shopping_tutorial\\Views\\Cart\\Index.cshtml",
+  "PreviewInSolutionExplorer": false
+}
