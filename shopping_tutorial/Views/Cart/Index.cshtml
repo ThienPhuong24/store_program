@@ -35,7 +35,7 @@
 
 							<tr>
 								<td class="cart_product">
-									<a href=""><img src="~/media/products/@item.Image" alt=""></a>
+									<a href="" ><img src="~/media/products/@item.Image" alt=""></a>
 								</td>
 								<td class="cart_description">
 									<h4><a href="">@item.ProductName<a></h4>
@@ -60,10 +60,18 @@
 								</td>
 							</tr>
 						}
-						<tr rowspan="6">
-							<td colspan="6">Grand Total :<p class="cart_total_price">  @Model.GrandTotal.ToString()</p></td>
+						<tr>
+							<td colspan="6">Grand Total :<p class="cart_total_price">  @Model.GrandTotal.ToString()</p></td> 
 							<td><a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Clear">Clear</a></td>
+							
+								@if (User.Identity?.IsAuthenticated ?? false) // đăng nhập mới đc checkout và cái rowspan = 5 chỗ tr để đây nhưng ko điền do lỗi cú pháp
+								{
+									<td><a class="btn btn-danger btn-sm" asp-controller="Checkout" asp-action="Checkout">Checkout</a></td>
+								}							
+
 						</tr>
+						
+
 
 					}
 					else

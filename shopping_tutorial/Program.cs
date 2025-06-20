@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using shopping_tutorial.Models;
 using shopping_tutorial.Repository;
 
 internal class Program
@@ -6,6 +8,12 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        //connection db
+        builder.Services.AddDbContext<DataContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration["ConnectionStrings:ConnectDb"]);
+        });
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
@@ -16,24 +24,43 @@ internal class Program
             options.IdleTimeout = TimeSpan.FromMinutes(15);
             options.Cookie.IsEssential = true;
         });
-        //connection db
-        builder.Services.AddDbContext<DataContext>(options =>
+
+        builder.Services.AddIdentity<AppUserModel, IdentityRole >().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+
+        builder.Services.Configure<IdentityOptions>(options =>
         {
-            options.UseSqlServer(builder.Configuration["ConnectionStrings:ConnectDb"]);
+            // Password settings.
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequiredLength = 4;
+           
+
+            // Lockout settings.
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+            options.User.RequireUniqueEmail = true;
         });
-            var app = builder.Build();
-           app.UseSession();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-            app.UseStaticFiles();
+        var app = builder.Build();
+        app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode={0}");
+        app.UseSession();
 
-            app.UseRouting();
+        app.UseStaticFiles();
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+        }
+        app.UseStaticFiles();
 
-            app.UseAuthorization();
+        app.UseRouting();
+
+        app.UseAuthentication();// xác thực 
+        app.UseAuthorization(); // xác thực xem account có quyền gì 
+        
         app.MapControllerRoute(
                name: "Areas",
                pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");

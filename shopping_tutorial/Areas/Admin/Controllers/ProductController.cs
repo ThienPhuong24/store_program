@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using shopping_tutorial.Models;
@@ -7,6 +8,7 @@ using shopping_tutorial.Repository;
 namespace shopping_tutorial.Areas.Admin.Controllers
 {
 	[Area("Admin")]
+    [Authorize]
 	public class ProductController : Controller
 	{
 		

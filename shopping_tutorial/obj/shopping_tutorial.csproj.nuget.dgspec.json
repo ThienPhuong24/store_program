@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\NgocHieu\\Downloads\\New folder (2)\\web\\shopping_tutorial\\shopping_tutorial\\shopping_tutorial.csproj": {}
+    "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj": {}
   },
   "projects": {
-    "C:\\Users\\NgocHieu\\Downloads\\New folder (2)\\web\\shopping_tutorial\\shopping_tutorial\\shopping_tutorial.csproj": {
+    "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\NgocHieu\\Downloads\\New folder (2)\\web\\shopping_tutorial\\shopping_tutorial\\shopping_tutorial.csproj",
+        "projectUniqueName": "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj",
         "projectName": "shopping_tutorial",
-        "projectPath": "C:\\Users\\NgocHieu\\Downloads\\New folder (2)\\web\\shopping_tutorial\\shopping_tutorial\\shopping_tutorial.csproj",
-        "packagesPath": "C:\\Users\\NgocHieu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\NgocHieu\\Downloads\\New folder (2)\\web\\shopping_tutorial\\shopping_tutorial\\obj\\",
+        "projectPath": "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj",
+        "packagesPath": "C:\\Users\\Duong Thai Ha\\.nuget\\packages\\",
+        "outputPath": "D:\\projectweb\\store_program\\shopping_tutorial\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\NgocHieu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Duong Thai Ha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -45,6 +44,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.21, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.21, )"
@@ -89,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.428\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }
