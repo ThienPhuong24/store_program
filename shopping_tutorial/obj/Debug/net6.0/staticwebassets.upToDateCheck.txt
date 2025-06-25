@@ -1,3 +1,4 @@
+wwwroot\backend\js\site.js
 wwwroot\css\animate.css
 wwwroot\css\bootstrap.min.css
 wwwroot\css\font-awesome.min.css
@@ -6,6 +7,9 @@ wwwroot\css\prettyPhoto.css
 wwwroot\css\price-range.css
 wwwroot\css\responsive.css
 wwwroot\favicon.ico
+wwwroot\images\1.jpg
+wwwroot\images\2.jpg
+wwwroot\images\404.png
 wwwroot\images\gallery1.jpg
 wwwroot\js\bootstrap.min.js
 wwwroot\js\contact.js
@@ -73,3 +77,8 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\media\products\03cbfb7d-0dff-4163-a697-6063493f1188_hoa.jpg
+wwwroot\media\products\1.jpg
+wwwroot\media\products\2.jpg
+wwwroot\media\products\78a7e3da-0767-4ff5-923a-65aa4131c634_tshirtblack.png
+wwwroot\media\products\9302bd0d-0929-4c6e-bf67-daa38babf76a_tải xuống.png

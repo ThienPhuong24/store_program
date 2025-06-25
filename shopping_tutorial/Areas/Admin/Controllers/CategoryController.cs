@@ -8,9 +8,10 @@ using shopping_tutorial.Repository;
 
 namespace shopping_tutorial.Areas.Admin.Controllers
 {
-   
+
     [Area("Admin")]
-    [Authorize]
+    [Route("Admin/Category")]
+    [Authorize(Roles = "Admin")]
 
     public class CategoryController : Controller
     {
@@ -20,10 +21,25 @@ namespace shopping_tutorial.Areas.Admin.Controllers
             _dataContext = context;
             
         }
-        public async Task<IActionResult> Index()
+        [Route("Index")]
+        public async Task<IActionResult> Index(int pg=1)
         {
-            return View(await _dataContext.Categories.OrderByDescending(p => p.Id).ToListAsync());
+            List<CategoryModel> category = _dataContext.Categories.ToList(); //33 items 
+            const int pageSize = 10;  // 10 items/ trang giống trong Paginate 
+            if(pg < 1) 
+            {
+                pg = 1;
+            }
+            int recsCount = category.Count(); // 33 items 
+            var pager = new Paginate(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize; // (3 - 1 ) * 10
+
+            // category.Skip(20).Take(10).ToList(); 
+            var data = category.Skip(recSkip).Take(pager.PageSize).ToList(); 
+            ViewBag.Pager = pager;
+            return View(data);
         }
+        [Route("Create")]
         public IActionResult Create()
         {
             

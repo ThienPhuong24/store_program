@@ -60,23 +60,20 @@
 								</td>
 							</tr>
 						}
-						<tr>
+						<tr rowspan= "5">
 							<td colspan="6">Grand Total :<p class="cart_total_price">  @Model.GrandTotal.ToString()</p></td> 
 							<td><a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Clear">Clear</a></td>
 							
-								@if (User.Identity?.IsAuthenticated ?? false) // đăng nhập mới đc checkout và cái rowspan = 5 chỗ tr để đây nhưng ko điền do lỗi cú pháp
-								{
+								@if (User.Identity?.IsAuthenticated ?? false){ // button checkout chỉ hiện khi đã đăng nhập 
 									<td><a class="btn btn-danger btn-sm" asp-controller="Checkout" asp-action="Checkout">Checkout</a></td>
 								}							
 
 						</tr>
-						
-
-
 					}
 					else
 					{
-						<h4>Your Cart is Empty.</h4>
+					<td colspan="5"><h4>Your Cart is Empty.</h4></td>
+						
 					}
 
 				</tbody>

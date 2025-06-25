@@ -9,7 +9,7 @@ namespace shopping_tutorial.Models
 	{
 		[Key]
 
-        public int Id { get; set; }
+        public long Id { get; set; }
 		[Required,MinLength(4,ErrorMessage="Yêu Cầu Nhập Tên Sản Phẩm")]
 		public string Name { get; set; }
 		public string Slug { get; set; }

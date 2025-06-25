@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using shopping_tutorial.Areas.Admin.Repository;
 using shopping_tutorial.Models;
 using shopping_tutorial.Repository;
 
@@ -15,6 +16,9 @@ internal class Program
             options.UseSqlServer(builder.Configuration["ConnectionStrings:ConnectDb"]);
         });
 
+        //Add Email Sender
+        builder.Services.AddTransient<IEmailSender, EmailSender>();
+
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
@@ -24,8 +28,10 @@ internal class Program
             options.IdleTimeout = TimeSpan.FromMinutes(15);
             options.Cookie.IsEssential = true;
         });
-
+        //Khai báo Identity 
         builder.Services.AddIdentity<AppUserModel, IdentityRole >().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+
+        builder.Services.AddRazorPages();
 
         builder.Services.Configure<IdentityOptions>(options =>
         {
@@ -41,7 +47,9 @@ internal class Program
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.AllowedForNewUsers = true;
-            options.User.RequireUniqueEmail = true;
+
+            //User settings 
+            options.User.RequireUniqueEmail = true; // một email chỉ có 1 tài khoàn duy nhất 
         });
 
         var app = builder.Build();
@@ -58,7 +66,7 @@ internal class Program
 
         app.UseRouting();
 
-        app.UseAuthentication();// xác thực 
+        app.UseAuthentication();// đăng nhập 
         app.UseAuthorization(); // xác thực xem account có quyền gì 
         
         app.MapControllerRoute(
@@ -80,12 +88,20 @@ internal class Program
         app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-		
-		//seeding data
-		var context =app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
-        SeedData.seedingData(context);
 
-            app.Run();
+        //seeding data
+        //using (var scope = app.Services.CreateScope())
+        //{
+        //    var services = scope.ServiceProvider;
+        //    var context = services.GetRequiredService<DataContext>();
+        //    SeedData.seedingData(context);
+        //}
+
+        //var context =app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
+        //      SeedData.seedingData(context);
+
+
+        app.Run();
             
         }
 }

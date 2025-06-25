@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "v5kg03uLZgRNP8B1qC2zMRTmk/BAs3KNuYvvKLBhrHu8raT0lHlI29OBvpGNGkS79V+RRZ0YZTBPtbLUhkGQXQ==",
+  "dgSpecHash": "BVHldtW9+Vw=",
   "success": true,
   "projectFilePath": "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj",
   "expectedPackageFiles": [
@@ -56,10 +56,24 @@
   ],
   "logs": [
     {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Newtonsoft.Json' 7.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
+      "projectPath": "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj",
+      "libraryId": "Newtonsoft.Json",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
       "code": "NU1701",
       "level": "Warning",
-      "warningLevel": 1,
       "message": "Package 'Newtonsoft.Json 7.0.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "projectPath": "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\projectweb\\store_program\\shopping_tutorial\\shopping_tutorial.csproj",
       "libraryId": "Newtonsoft.Json",
       "targetGraphs": [
         "net6.0"

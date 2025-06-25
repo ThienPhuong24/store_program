@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using shopping_tutorial.Areas.Admin.Repository;
 using shopping_tutorial.Models;
 using shopping_tutorial.Repository;
 using System.Security.Claims;
@@ -8,7 +9,13 @@ namespace shopping_tutorial.Controllers
 	public class CheckoutController : Controller
 	{
 		private readonly DataContext _dataContext;
-		public CheckoutController(DataContext context)
+        //private readonly IEmailSender _emailSender;
+        //public CheckoutController(IEmailSender emailSender, DataContext context)
+        //{
+        //    _dataContext = context;
+        //    _emailSender = emailSender;
+        //}
+        public CheckoutController(  DataContext context)
 		{
 			_dataContext = context;
 		}
@@ -38,13 +45,20 @@ namespace shopping_tutorial.Controllers
 					orderdetails.ProductId = cart.ProductId;
 					orderdetails.Price = cart.Price;
 					orderdetails.Quantity = cart.Quantity;
-					_dataContext.Add(orderItem);// thêm dữ liệu tạo đơn hàng mới 
+					_dataContext.Add(orderdetails);// thêm dữ liệu tạo đơn hàng mới 
 					_dataContext.SaveChanges();
 				}
-				TempData["success"] = "Checkout thành công";
-				return RedirectToAction("Index","Cart");
+				HttpContext.Session.Remove("Cart");
+				//send mail order when success 
+				//var receive = userEmail;// email nhận sẽ là email của người đặt hàng 
+				//var subject = "Đăng nhập trên thiết bị thành công";
+				//var message = "Đặt hàng thành công, trải nhiệm dịch vụ nhé";
 
+				//await _emailSender.SendEmailAsync(receive, subject, message);
 
+				//Message checkout successfully 
+				TempData["success"] = "Đơn hàng đã được tạo, vui lòng chờ duyệt đơn hàng nhé";
+				return RedirectToAction("Index", "Cart");
 			}
 			return View();
 		}
