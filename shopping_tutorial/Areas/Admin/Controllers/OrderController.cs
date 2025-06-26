@@ -6,6 +6,7 @@ using shopping_tutorial.Repository;
 namespace shopping_tutorial.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
     [Authorize]
     public class OrderController : Controller
 	{
@@ -26,7 +27,7 @@ namespace shopping_tutorial.Areas.Admin.Controllers
             return View(DetailsOrder);
         }
         [HttpPost]
-        [Route("UpdateOrder")]
+        // [Route("UpdateOrder")]
         public async Task<IActionResult> UpdateOrder(string ordercode, int status)
         {
             var order = await _dataContext.Orders.FirstOrDefaultAsync(o => o.OrderCode == ordercode);

@@ -40,21 +40,24 @@ namespace shopping_tutorial.Areas.Admin.Controllers
             ViewBag.Pager = pager;
             return View(data);
         }
-
+        [HttpGet]
         [Route("Create")]
         public async Task<IActionResult> Create()
         {
             return View();
         }
-        [Route("Create")]
         [HttpPost]
+        [Route("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BrandModel brand)
         {
             if (ModelState.IsValid)
             {
                 //code them du lieu ne
-                brand.Slug = brand.Name.Replace(" ", "-");
+                brand.Slug = !string.IsNullOrEmpty(brand.Name)
+                 ? brand.Name.Trim().Replace(" ", "-").ToLower()
+                 : Guid.NewGuid().ToString(); // fallback nếu null
+
                 var slug = await _dataContext.Brands.FirstOrDefaultAsync(p => p.Slug == brand.Slug);
                 if (slug != null)
                 {
@@ -85,6 +88,8 @@ namespace shopping_tutorial.Areas.Admin.Controllers
 
             return View(brand);
         }
+        [HttpGet]
+        [Route("Edit/{Id}")]
         public async Task<IActionResult> Edit(int Id)
         {
             BrandModel brand = await _dataContext.Brands.FindAsync(Id);
@@ -92,6 +97,7 @@ namespace shopping_tutorial.Areas.Admin.Controllers
             return View(brand);
         }
         [HttpPost]
+        [Route("Edit/{Id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(BrandModel brand)
         {
@@ -129,6 +135,8 @@ namespace shopping_tutorial.Areas.Admin.Controllers
 
             return View(brand);
         }
+        [HttpGet]
+        [Route("Delete/{Id}")]
         public async Task<IActionResult> Delete(int Id)
         {
             BrandModel brand = await _dataContext.Brands.FindAsync(Id);
@@ -139,5 +147,5 @@ namespace shopping_tutorial.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
     }
-    
+
 }

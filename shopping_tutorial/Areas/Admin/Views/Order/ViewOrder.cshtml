@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<OrderDetails>
 @{
+    var orderCode = Model.FirstOrDefault()?.OrderCode ?? "";
     ViewData["title"] = "Order Details";
     decimal total = 0; //store total amount
     decimal subtotal = 0;
@@ -49,7 +50,7 @@
         <tr>
             <th colspan="5">Total:</th>
             <td>@total.ToString("C")</td>
-            <td> <select class="form-control select-update-order">
+            <td> <select class="form-control select-update-order" data-ordercode="@orderCode">
                 <option value="1">Đơn hàng mới </option>
                 <option value="0">Đã xử lý </option>
             </select></td>
@@ -62,36 +63,29 @@
 </html>
 @section Scripts{
     <script>
-        $(document).ready(function(){
-            $('.select-update-order').change(function(){
-                var status = $(this).val();
-                var ordercode = $('.getId').val();
-                alert(status);
-                alert(ordercode);
+        $(document).ready(function () {
+    $('.select-update-order').change(function () {
+        var status = $(this).val();
+        var ordercode = $(this).data("ordercode");
 
-                $.ajax({
-                    type:"POST",
-                    url:"@Url.Action("UpdateOrder")",
-                    data: {status: status,ordercode: ordercode},//send data to the server
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Order/UpdateOrder", // đúng route vì bạn có [Route("Admin/[controller]/[action]")]
+            data: { status: status, ordercode: ordercode },
 
-                    success:function(result){
-                        //handle successfull update
-                        if(result.success){
-                            //update ui or show success message
-                            //console.log("Update successful");
-                            Swal.fire("Cập nhập đơn hàng thành công");
-                        }
-                        else{
-                            //handle error
-                            Swal.fire("Cập nhập đơn hàng thất bại" + result.message);
-                            //console.log("Update failed: " + result.message);
-                        }
-                    },
-                    error: function(req,status,error){
-                        console.error("Error updating order: ", error);
-                    }
-                });
-            });
+            success: function (result) {
+                if (result.success) {
+                    Swal.fire("Cập nhật đơn hàng thành công");
+                } else {
+                    Swal.fire("Cập nhật đơn hàng thất bại: " + result.message);
+                }
+            },
+            error: function (req, status, error) {
+                Swal.fire("Lỗi kết nối: " + error);
+            }
         });
+    });
+});
+
     </script>
 }

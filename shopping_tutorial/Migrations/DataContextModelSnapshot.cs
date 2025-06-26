@@ -200,6 +200,9 @@ namespace shopping_tutorial.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -247,7 +250,7 @@ namespace shopping_tutorial.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("shopping_tutorial.Models.CategoryModel", b =>
@@ -274,7 +277,7 @@ namespace shopping_tutorial.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("shopping_tutorial.Models.OrderDetails", b =>
@@ -302,7 +305,9 @@ namespace shopping_tutorial.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("shopping_tutorial.Models.OrderModel", b =>
@@ -327,7 +332,7 @@ namespace shopping_tutorial.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("shopping_tutorial.Models.ProductModel", b =>
@@ -367,7 +372,40 @@ namespace shopping_tutorial.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("shopping_tutorial.Models.RatingModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Star")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -421,6 +459,17 @@ namespace shopping_tutorial.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("shopping_tutorial.Models.OrderDetails", b =>
+                {
+                    b.HasOne("shopping_tutorial.Models.ProductModel", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("shopping_tutorial.Models.ProductModel", b =>
                 {
                     b.HasOne("shopping_tutorial.Models.BrandModel", "Brand")
@@ -438,6 +487,17 @@ namespace shopping_tutorial.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("shopping_tutorial.Models.RatingModel", b =>
+                {
+                    b.HasOne("shopping_tutorial.Models.ProductModel", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

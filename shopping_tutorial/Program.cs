@@ -8,6 +8,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        
         var builder = WebApplication.CreateBuilder(args);
 
         //connection db
@@ -29,7 +30,7 @@ internal class Program
             options.Cookie.IsEssential = true;
         });
         //Khai báo Identity 
-        builder.Services.AddIdentity<AppUserModel, IdentityRole >().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+        builder.Services.AddIdentity<AppUserModel, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
 
         builder.Services.AddRazorPages();
 
@@ -41,7 +42,7 @@ internal class Program
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequireUppercase = false;
             options.Password.RequiredLength = 4;
-           
+
 
             // Lockout settings.
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -62,13 +63,18 @@ internal class Program
         {
             app.UseExceptionHandler("/Home/Error");
         }
+        else
+        {
+            app.UseDeveloperExceptionPage(); // ✅ dòng này giúp hiện lỗi chi tiết khi chạy ở Development
+        }
+
         app.UseStaticFiles();
 
         app.UseRouting();
 
         app.UseAuthentication();// đăng nhập 
         app.UseAuthorization(); // xác thực xem account có quyền gì 
-        
+
         app.MapControllerRoute(
                name: "Areas",
                pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");
@@ -77,7 +83,7 @@ internal class Program
         app.MapControllerRoute(
                name: "category",
                pattern: "category/{Slug?}",
-        defaults: new {controller="Brand",action="Index"});
+        defaults: new { controller = "Brand", action = "Index" });
 
         app.UseAuthorization();
         app.MapControllerRoute(
@@ -90,18 +96,18 @@ internal class Program
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
         //seeding data
-        //using (var scope = app.Services.CreateScope())
-        //{
-        //    var services = scope.ServiceProvider;
-        //    var context = services.GetRequiredService<DataContext>();
-        //    SeedData.seedingData(context);
-        //}
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<DataContext>();
+            SeedData.seedingData(context);
+        }
 
         //var context =app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
         //      SeedData.seedingData(context);
 
 
         app.Run();
-            
-        }
+
+    }
 }

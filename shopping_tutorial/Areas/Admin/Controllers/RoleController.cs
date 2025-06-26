@@ -9,7 +9,7 @@ using System.Data;
 namespace shopping_tutorial.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/Brand")]
+    [Route("Admin/Role")]
     [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
