@@ -7,7 +7,8 @@
     <meta name="author" content="">
     <title>Home | E-Shopper</title>
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.1/css/font-awesome.css"  rel="stylesheet">
+
     <link href="~/css/prettyPhoto.css" rel="stylesheet">
     <link href="~/css/price-range.css" rel="stylesheet">
     <link href="~/css/animate.css" rel="stylesheet">
@@ -89,11 +90,21 @@
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
-                                <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-                                <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                                <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-                                <li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+                                
+                                
+                                <li><a asp-controller="Cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                                @if(User.Identity?.IsAuthenticated ?? false)
+                                {
+                                    <li><a asp-controller="Account" asp-action="Logout"><i class="fa fa-lock"></i>Hi, @User.Identity.Name, Logout</a></li>
+                                    <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li> // cho checkout vào đây thì nghĩa là sau khi đăng nhập mới được checkout
+                                    <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+                                    <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
+                                }
+                                else
+                                {
+                                    <li><a asp-controller="Account" asp-action="Login"><i class="fa fa-lock"></i>Login</a></li>
+                                }
+
                             </ul>
                         </div>
                     </div>
@@ -123,8 +134,6 @@
                                         <li><a asp-controller="Category">Category</a></li>
                                         <li><a asp-controller="Product" asp-action="Details">Product Details</a></li>
                                         <li><a asp-controller="Cart" asp-action="Checkout">Checkout</a></li>
-                                        <li><a asp-controller="Cart">Cart</a></li>
-                                        <li><a>Login</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -140,12 +149,16 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="search_box pull-right">
-                            <input type="text" placeholder="Search" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+						<form asp-controller="Product" asp-action="Search" method="post">
+						<div class="search_box pull-right">
+								<input type="text" placeholder="Search" name="searchTerm" />
+								<button class="btn btn-warning" type="submit">Search</button>
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
         </div><!--/header-bottom-->
     </header><!--/header-->
 
@@ -163,11 +176,9 @@
 
                         <div class="carousel-inner">
                             <div class="item active">
-                                <div class="col-sm-6">
-                                    <h1><span>E</span>-SHOPPER</h1>
-                                    <h2>Free E-Commerce Template</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                                    <button type="button" class="btn btn-default get">Get it now</button>
+                                <div class="col-sm-12">
+                                    <img src="https://thietkewebchuyen.com/wp-content/uploads/thiet-ke-banner-website-anh-bia-Facebook-shop-thoi-trang-quan-ao-10.jpg" width="100%" />
+
                                 </div>
                                 <div class="col-sm-6">
                                     <img src="images/home/girl1.jpg" class="girl img-responsive" alt="" />
@@ -391,5 +402,7 @@
     <script src="~/js/price-range.js"></script>
     <script src="~/js/jquery.prettyPhoto.js"></script>
     <script src="~/js/main.js"></script>
+
+    @await RenderSectionAsync("Scripts", required:false)
 </body>
 </html>

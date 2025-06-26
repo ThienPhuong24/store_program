@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using shopping_tutorial.Models;
 using shopping_tutorial.Repository;
@@ -6,6 +7,8 @@ using shopping_tutorial.Repository;
 namespace shopping_tutorial.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin/Brand")]
+    [Authorize(Roles = "Admin")]
     public class BrandController : Controller
     {
         private readonly DataContext _dataContext;
@@ -14,22 +17,47 @@ namespace shopping_tutorial.Areas.Admin.Controllers
             _dataContext = context;
 
         }
-        public async Task<IActionResult> Index()
+        //[Route("Index")]
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
+        //}
+
+
+        [Route("Index")]
+        public async Task<IActionResult> Index(int pg = 1)
         {
-            return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
+            List<BrandModel> brand = _dataContext.Brands.ToList();
+            const int pageSize = 10;
+            if (pg < 1)
+            {
+                pg = 1;
+            }
+            int recsCount = brand.Count();
+            var pager = new Paginate(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = brand.Skip(recSkip).Take(pager.PageSize).ToList();
+            ViewBag.Pager = pager;
+            return View(data);
         }
+        [HttpGet]
+        [Route("Create")]
         public async Task<IActionResult> Create()
         {
             return View();
         }
         [HttpPost]
+        [Route("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BrandModel brand)
         {
             if (ModelState.IsValid)
             {
                 //code them du lieu ne
-                brand.Slug = brand.Name.Replace(" ", "-");
+                brand.Slug = !string.IsNullOrEmpty(brand.Name)
+                 ? brand.Name.Trim().Replace(" ", "-").ToLower()
+                 : Guid.NewGuid().ToString(); // fallback nếu null
+
                 var slug = await _dataContext.Brands.FirstOrDefaultAsync(p => p.Slug == brand.Slug);
                 if (slug != null)
                 {
@@ -60,6 +88,8 @@ namespace shopping_tutorial.Areas.Admin.Controllers
 
             return View(brand);
         }
+        [HttpGet]
+        [Route("Edit/{Id}")]
         public async Task<IActionResult> Edit(int Id)
         {
             BrandModel brand = await _dataContext.Brands.FindAsync(Id);
@@ -67,6 +97,7 @@ namespace shopping_tutorial.Areas.Admin.Controllers
             return View(brand);
         }
         [HttpPost]
+        [Route("Edit/{Id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(BrandModel brand)
         {
@@ -104,6 +135,8 @@ namespace shopping_tutorial.Areas.Admin.Controllers
 
             return View(brand);
         }
+        [HttpGet]
+        [Route("Delete/{Id}")]
         public async Task<IActionResult> Delete(int Id)
         {
             BrandModel brand = await _dataContext.Brands.FindAsync(Id);
@@ -114,5 +147,5 @@ namespace shopping_tutorial.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
     }
-    
+
 }

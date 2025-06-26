@@ -8,7 +8,6 @@ namespace shopping_tutorial.Models
 	public class ProductModel
 	{
 		[Key]
-
         public int Id { get; set; }
 		[Required,MinLength(4,ErrorMessage="Yêu Cầu Nhập Tên Sản Phẩm")]
 		public string Name { get; set; }
@@ -26,6 +25,8 @@ namespace shopping_tutorial.Models
 		 public CategoryModel Category { get; set; }
        
         public BrandModel Brand { get; set; }
+
+		public RatingModel Ratings { get; set; }
 		public string Image { get; set; } 
 		[NotMapped]
 		[FileExtension]

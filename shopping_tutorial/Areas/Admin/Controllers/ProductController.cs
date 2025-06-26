@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using shopping_tutorial.Models;
@@ -6,8 +7,10 @@ using shopping_tutorial.Repository;
 
 namespace shopping_tutorial.Areas.Admin.Controllers
 {
-	[Area("Admin")]
-	public class ProductController : Controller
+    [Area("Admin")]
+    [Route("Admin/Product")]
+    [Authorize(Roles = "Admin")]
+    public class ProductController : Controller
 	{
 		
 		private readonly DataContext _dataContext;
@@ -18,7 +21,8 @@ namespace shopping_tutorial.Areas.Admin.Controllers
 			_webHostEnvironment = webHostEnvironment;
 
 		}
-		public async Task<IActionResult> Index()
+        [Route("Index")]
+        public async Task<IActionResult> Index()
 		{
 			return View(await _dataContext.Products.OrderByDescending(p => p.Id).Include(p => p.Category).Include(p => p.Brand).ToListAsync());
 		}

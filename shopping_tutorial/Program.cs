@@ -1,11 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using shopping_tutorial.Areas.Admin.Repository;
+using shopping_tutorial.Models;
 using shopping_tutorial.Repository;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+        
         var builder = WebApplication.CreateBuilder(args);
+
+        //connection db
+        builder.Services.AddDbContext<DataContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration["ConnectionStrings:ConnectDb"]);
+        });
+
+        //Add Email Sender
+        builder.Services.AddTransient<IEmailSender, EmailSender>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
@@ -16,24 +29,52 @@ internal class Program
             options.IdleTimeout = TimeSpan.FromMinutes(15);
             options.Cookie.IsEssential = true;
         });
-        //connection db
-        builder.Services.AddDbContext<DataContext>(options =>
+        //Khai báo Identity 
+        builder.Services.AddIdentity<AppUserModel, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+
+        builder.Services.AddRazorPages();
+
+        builder.Services.Configure<IdentityOptions>(options =>
         {
-            options.UseSqlServer(builder.Configuration["ConnectionStrings:ConnectDb"]);
+            // Password settings.
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequiredLength = 4;
+
+
+            // Lockout settings.
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+
+            //User settings 
+            options.User.RequireUniqueEmail = true; // một email chỉ có 1 tài khoàn duy nhất 
         });
-            var app = builder.Build();
-           app.UseSession();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-            app.UseStaticFiles();
+        var app = builder.Build();
+        app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode={0}");
+        app.UseSession();
 
-            app.UseRouting();
+        app.UseStaticFiles();
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+        }
+        else
+        {
+            app.UseDeveloperExceptionPage(); // ✅ dòng này giúp hiện lỗi chi tiết khi chạy ở Development
+        }
 
-            app.UseAuthorization();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseAuthentication();// đăng nhập 
+        app.UseAuthorization(); // xác thực xem account có quyền gì 
+
         app.MapControllerRoute(
                name: "Areas",
                pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");
@@ -42,7 +83,7 @@ internal class Program
         app.MapControllerRoute(
                name: "category",
                pattern: "category/{Slug?}",
-        defaults: new {controller="Brand",action="Index"});
+        defaults: new { controller = "Brand", action = "Index" });
 
         app.UseAuthorization();
         app.MapControllerRoute(
@@ -53,12 +94,20 @@ internal class Program
         app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-		
-		//seeding data
-		var context =app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
-        SeedData.seedingData(context);
 
-            app.Run();
-            
+        //seeding data
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<DataContext>();
+            SeedData.seedingData(context);
         }
+
+        //var context =app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
+        //      SeedData.seedingData(context);
+
+
+        app.Run();
+
+    }
 }
